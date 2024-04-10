@@ -2,7 +2,7 @@ import { createSlice, nanoid } from "@reduxjs/toolkit";
 import { sub } from "date-fns";
 import { RootState } from "../store";
 
-interface ReactionState {
+export interface ReactionState {
   like: number;
   wow: number;
   heart: number;
@@ -85,9 +85,16 @@ const postSlice = createSlice({
         };
       },
     },
+    addReaction: (state, action) => {
+      const { postID, reaction } = action.payload;
+      const existingPost: any = state.find((post) => post.id === postID);
+      if (existingPost) {
+        existingPost.reactions[reaction]++;
+      }
+    },
   },
 });
 
 export const selectAllPosts = (state: RootState) => state.posts;
-export const { addPost } = postSlice.actions;
+export const { addPost, addReaction } = postSlice.actions;
 export default postSlice.reducer;

@@ -15,7 +15,7 @@ const Posts: React.FC = () => {
       <p>{post.description}</p>
       <PostAuthor authorID={post.authorID} />
       <TimeAgo timestamp={post.timestamp} />
-      <ReactionsButtons postID={post.id} />
+      <ReactionsButtons post={post} />
     </article>
   ));
   return <div>{renderPosts}</div>;
