@@ -1,6 +1,7 @@
 import { addPost } from "@/store/slices/postSlice";
-import { selectAllUsers } from "@/store/slices/userSlice";
-import React, { useState } from "react";
+import { fetchUsers, selectAllUsers } from "@/store/slices/userSlice";
+import { AppDispatch } from "@/store/store";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Button } from "./ui/button";
 import { Input } from "./ui/input";
@@ -23,8 +24,14 @@ const AddPostForm = () => {
   const canSave = Boolean(title) && Boolean(description) && Boolean(userID);
 
   const { toast } = useToast();
-  const dispatch = useDispatch();
+  const dispatch: AppDispatch = useDispatch();
   const users = useSelector(selectAllUsers);
+
+  useEffect(() => {
+    if (users.status === "idle") {
+      dispatch(fetchUsers());
+    }
+  }, [users, dispatch]);
 
   const onTitleChange = (e: React.ChangeEvent<HTMLInputElement>) =>
     setTitle(e.target.value);
@@ -52,7 +59,7 @@ const AddPostForm = () => {
     }
   };
 
-  const renderUsers = users.map((user) => (
+  const renderUsers = users.users.map((user) => (
     <SelectItem key={user.id} value={String(user.id)}>
       {user.name}
     </SelectItem>
@@ -88,7 +95,7 @@ const AddPostForm = () => {
         <Label className='text-2xl' htmlFor='author'>
           Author:
         </Label>
-        <Select onValueChange={onAuthorChange} value={userID}>
+        <Select onValueChange={onAuthorChange} value={String(userID)}>
           <SelectTrigger name='author' id='author' className='w-[180px]'>
             <SelectValue placeholder='Select Author' />
           </SelectTrigger>

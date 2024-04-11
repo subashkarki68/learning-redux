@@ -8,7 +8,8 @@ interface PostAuthorProps {
 const PostAuthor = ({ userId }: PostAuthorProps) => {
   const users = useSelector(selectAllUsers);
   const author =
-    users.find((user) => user.id === userId)?.name || "Unknown Author";
+    users.users.find((user) => String(user.id) === userId)?.name ||
+    "Unknown Author";
 
   return (
     <span>
