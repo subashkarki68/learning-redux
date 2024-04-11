@@ -2,13 +2,13 @@ import { selectAllUsers } from "@/store/slices/userSlice";
 import { useSelector } from "react-redux";
 
 interface PostAuthorProps {
-  authorID: string;
+  userId: string;
 }
 
-const PostAuthor = ({ authorID }: PostAuthorProps) => {
+const PostAuthor = ({ userId }: PostAuthorProps) => {
   const users = useSelector(selectAllUsers);
   const author =
-    users.find((user) => user.id === authorID)?.name || "Unknown Author";
+    users.find((user) => user.id === userId)?.name || "Unknown Author";
 
   return (
     <span>
